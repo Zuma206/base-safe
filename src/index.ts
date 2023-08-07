@@ -7,11 +7,11 @@
 import DetaClassSDK from "deta/dist/types/deta";
 import { KeyType } from "deta/dist/types/types/key";
 import { z } from "zod";
-import { ObjectType } from "deta/dist/types/types/basic";
+import { DetaType } from "deta/dist/types/types/basic";
 import { BaseSafeClass } from "./base";
 
 export class DetaClass extends DetaClassSDK {
-  public BaseSafe<T extends ObjectType>(
+  public BaseSafe<T extends DetaType>(
     baseName: string,
     schema: z.ZodType<T>,
     host?: string
