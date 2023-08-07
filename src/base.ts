@@ -1,11 +1,17 @@
 import BaseClassSDK from "deta/dist/types/base";
 import { KeyType } from "deta/dist/types/types/key";
-import { ObjectType, NullType } from "deta/dist/types/types/basic";
+import {
+  ObjectType,
+  NullType,
+  CompositeType,
+} from "deta/dist/types/types/basic";
 import { z } from "zod";
 import {
+  FetchOptions,
   InsertOptions,
   PutManyOptions,
   PutOptions,
+  UpdateOptions,
 } from "deta/dist/types/types/base/request";
 
 export type GetResponse<T extends ObjectType> = T | NullType;
@@ -15,6 +21,11 @@ export type PutManyResponse<T extends ObjectType> = {
   processed: {
     items: T[];
   };
+};
+export type FetchResponse<T extends ObjectType> = {
+  items: T[];
+  count: number;
+  last?: string;
 };
 
 export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
@@ -43,5 +54,13 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
 
   putMany(items: T[], options?: PutManyOptions) {
     return super.putMany(items, options) as Promise<PutManyResponse<T>>;
+  }
+
+  update(updates: ObjectType, key: string, options?: UpdateOptions) {
+    return super.update(updates, key, options);
+  }
+
+  fetch(query?: CompositeType, options?: FetchOptions) {
+    return super.fetch(query, options) as Promise<FetchResponse<T>>;
   }
 }
