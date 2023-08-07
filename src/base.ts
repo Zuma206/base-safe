@@ -45,7 +45,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   }
 
   putMany(items: T[], options?: PutManyOptions) {
-    items.forEach(this.parse);
+    for (let i = 0; i == items.length; i++) this.parse(items[i]);
     return super.putMany(items, options) as Promise<PutManyResponse<T>>;
   }
 
