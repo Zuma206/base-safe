@@ -1,10 +1,21 @@
 import BaseClassSDK from "deta/dist/types/base";
 import { KeyType } from "deta/dist/types/types/key";
-import { ObjectType, NullType, DetaType } from "deta/dist/types/types/basic";
+import { ObjectType, NullType } from "deta/dist/types/types/basic";
 import { z } from "zod";
-import { InsertOptions, PutOptions } from "deta/dist/types/types/base/request";
+import {
+  InsertOptions,
+  PutManyOptions,
+  PutOptions,
+} from "deta/dist/types/types/base/request";
 
 export type GetResponse<T extends ObjectType> = T | NullType;
+export type PutResponse<T extends ObjectType> = T | NullType;
+export type InsertResponse<T extends ObjectType> = T;
+export type PutManyResponse<T extends ObjectType> = {
+  processed: {
+    items: T[];
+  };
+};
 
 export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   constructor(
@@ -19,7 +30,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   }
 
   put(data: T, key?: string, options?: PutOptions) {
-    return super.put(data, key, options);
+    return super.put(data, key, options) as Promise<PutResponse<T>>;
   }
 
   get(key: string) {
@@ -27,6 +38,10 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   }
 
   insert(data: T, key?: string, options?: InsertOptions) {
-    return super.insert(data, key, options);
+    return super.insert(data, key, options) as Promise<InsertResponse<T>>;
+  }
+
+  putMany(items: T[], options?: PutManyOptions) {
+    return super.putMany(items, options) as Promise<PutManyResponse<T>>;
   }
 }
