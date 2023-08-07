@@ -1,10 +1,6 @@
 import BaseClassSDK from "deta/dist/types/base";
 import { KeyType } from "deta/dist/types/types/key";
-import {
-  ObjectType,
-  NullType,
-  CompositeType,
-} from "deta/dist/types/types/basic";
+import { ObjectType, CompositeType } from "deta/dist/types/types/basic";
 import { z } from "zod";
 import {
   FetchOptions,
@@ -13,20 +9,13 @@ import {
   PutOptions,
   UpdateOptions,
 } from "deta/dist/types/types/base/request";
-
-export type GetResponse<T extends ObjectType> = T | NullType;
-export type PutResponse<T extends ObjectType> = T | NullType;
-export type InsertResponse<T extends ObjectType> = T;
-export type PutManyResponse<T extends ObjectType> = {
-  processed: {
-    items: T[];
-  };
-};
-export type FetchResponse<T extends ObjectType> = {
-  items: T[];
-  count: number;
-  last?: string;
-};
+import {
+  FetchResponse,
+  GetResponse,
+  InsertResponse,
+  PutManyResponse,
+  PutResponse,
+} from "./types";
 
 export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   constructor(
