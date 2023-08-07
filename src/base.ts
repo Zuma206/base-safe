@@ -54,13 +54,14 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
 
   update(updates: ObjectType, key: string, options?: UpdateOptions) {
     return super.update(updates, key, options);
-  }
+  } /** TODO: Add type to "update" parameter */
 
   fetch(query?: CompositeType, options?: FetchOptions) {
     return super.fetch(query, options) as Promise<FetchResponse<T>>;
-  }
+  } /** TODO: Add type to "update" parameter
+        TODO: Add "target" option to FetchOptions */
 
   protected parse(...data: unknown[]) {
     this.manySchema.parse(data);
   }
-}
+} /** TODO: Add JSDoc documentation */
