@@ -1,0 +1,26 @@
+{
+  "name": "base-safe",
+  "version": "0.1.0",
+  "description": "A type-safe version of the Deta Base SDK",
+  "main": "dist/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "build": "microbundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/zuma206/base-safe"
+  },
+  "keywords": [
+    "base",
+    "deta",
+    "typesafe",
+    "typescript"
+  ],
+  "author": "Zuma206",
+  "license": "MIT",
+  "devDependencies": {
+    "microbundle": "^0.15.1",
+    "typescript": "^5.1.6"
+  }
+}
