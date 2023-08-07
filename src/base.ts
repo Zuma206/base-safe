@@ -18,6 +18,8 @@ import {
 } from "./types";
 
 export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
+  protected manySchema: z.ZodArray<z.ZodType<T>>;
+
   constructor(
     key: string,
     type: KeyType,
@@ -28,6 +30,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
     host?: string
   ) {
     super(key, type, projectId, baseName, host);
+    this.manySchema = z.array(this.schema);
   }
 
   put(data: T, key?: string, options?: PutOptions) {
@@ -45,7 +48,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   }
 
   putMany(items: T[], options?: PutManyOptions) {
-    for (let i = 0; i == items.length; i++) this.parse(items[i]);
+    this.parse(...items);
     return super.putMany(items, options) as Promise<PutManyResponse<T>>;
   }
 
@@ -57,9 +60,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
     return super.fetch(query, options) as Promise<FetchResponse<T>>;
   }
 
-  protected parse(data: unknown) {
-    if (this.validation) {
-      this.schema.parse(data);
-    }
+  protected parse(...data: unknown[]) {
+    this.manySchema.parse(data);
   }
 }
