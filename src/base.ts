@@ -24,12 +24,14 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
     projectId: string,
     baseName: string,
     public readonly schema: z.ZodType<T>,
+    protected readonly validation: boolean,
     host?: string
   ) {
     super(key, type, projectId, baseName, host);
   }
 
   put(data: T, key?: string, options?: PutOptions) {
+    this.parse(data);
     return super.put(data, key, options) as Promise<PutResponse<T>>;
   }
 
@@ -38,10 +40,12 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
   }
 
   insert(data: T, key?: string, options?: InsertOptions) {
+    this.parse(data);
     return super.insert(data, key, options) as Promise<InsertResponse<T>>;
   }
 
   putMany(items: T[], options?: PutManyOptions) {
+    items.forEach(this.parse);
     return super.putMany(items, options) as Promise<PutManyResponse<T>>;
   }
 
@@ -51,5 +55,11 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
 
   fetch(query?: CompositeType, options?: FetchOptions) {
     return super.fetch(query, options) as Promise<FetchResponse<T>>;
+  }
+
+  protected parse(data: unknown) {
+    if (this.validation) {
+      this.schema.parse(data);
+    }
   }
 }

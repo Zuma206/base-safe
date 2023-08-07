@@ -14,6 +14,7 @@ export class DetaClass extends DetaClassSDK {
   public BaseSafe<T extends ObjectType>(
     baseName: string,
     schema: z.ZodType<T>,
+    validation: boolean = true,
     host?: string
   ) {
     const name = baseName?.trim();
@@ -22,7 +23,15 @@ export class DetaClass extends DetaClassSDK {
     }
 
     const { key, type, projectId } = this as any;
-    return new BaseSafeClass(key, type, projectId, name, schema, host);
+    return new BaseSafeClass(
+      key,
+      type,
+      projectId,
+      name,
+      schema,
+      validation,
+      host
+    );
   }
 }
 
