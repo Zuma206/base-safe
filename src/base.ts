@@ -1,8 +1,8 @@
 import BaseClassSDK from "deta/dist/types/base";
 import { KeyType } from "deta/dist/types/types/key";
-import { ObjectType, NullType } from "deta/dist/types/types/basic";
+import { ObjectType, NullType, DetaType } from "deta/dist/types/types/basic";
 import { z } from "zod";
-import { PutOptions } from "deta/dist/types/types/base/request";
+import { InsertOptions, PutOptions } from "deta/dist/types/types/base/request";
 
 export type GetResponse<T extends ObjectType> = T | NullType;
 
@@ -24,5 +24,9 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
 
   get(key: string) {
     return super.get(key) as Promise<GetResponse<T>>;
+  }
+
+  insert(data: T, key?: string, options?: InsertOptions) {
+    return super.insert(data, key, options);
   }
 }
