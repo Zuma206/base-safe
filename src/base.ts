@@ -15,9 +15,11 @@ import {
   InsertResponse,
   PutManyResponse,
   PutResponse,
+  RecordType,
+  Updates,
 } from "./types";
 
-export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
+export class BaseSafeClass<T extends RecordType> extends BaseClassSDK {
   protected manySchema: z.ZodArray<z.ZodType<T>>;
 
   constructor(
@@ -52,7 +54,7 @@ export class BaseSafeClass<T extends ObjectType> extends BaseClassSDK {
     return super.putMany(items, options) as Promise<PutManyResponse<T>>;
   }
 
-  update(updates: ObjectType, key: string, options?: UpdateOptions) {
+  update(updates: Updates<T>, key: string, options?: UpdateOptions) {
     return super.update(updates, key, options);
   } /** TODO: Add type to "update" parameter */
 
