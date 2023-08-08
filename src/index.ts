@@ -4,48 +4,28 @@
  * Author: Zuma206
  */
 
-import DetaClassSDK from "deta/dist/types/deta";
-import { KeyType } from "deta/dist/types/types/key";
-import { z } from "zod";
-import { BaseSafeClass } from "./base";
+import { Deta as DetaSDK } from "deta";
+import type DetaClassSDK from "deta/dist/types/deta";
+import type { z } from "zod";
 import { RecordType } from "./types";
+import { BaseSafeClass } from "./base";
 
-export class DetaClass extends DetaClassSDK {
-  public BaseSafe<T extends RecordType>(
-    baseName: string,
-    schema: z.ZodType<T>,
-    validation: boolean = true,
-    host?: string
-  ) {
-    const name = baseName?.trim();
-    if (!name) {
-      throw new Error("Base name is not defined");
-    }
+class DetaClass {
+  constructor(protected deta: DetaClassSDK) {}
 
-    const { key, type, projectId } = this as any;
-    return new BaseSafeClass(
-      key,
-      type,
-      projectId,
-      name,
-      schema,
-      validation,
-      host
-    );
+  Base(baseName: string, host?: string) {
+    return this.deta.Base(baseName, host);
+  }
+
+  Drive(driveName: string, host?: string) {
+    return this.deta.Drive(driveName, host);
+  }
+
+  BaseSafe(baseName: string, schema: z.ZodType<RecordType>, host?: string) {
+    return new BaseSafeClass(this.deta.Base(baseName, host), schema);
   }
 }
 
 export function Deta(projectKey?: string, authToken?: string) {
-  const token = authToken?.trim();
-  const key = projectKey?.trim();
-  if (token && key) {
-    return new DetaClass(token, KeyType.AuthToken, key);
-  }
-
-  const apiKey = key || process.env.DETA_PROJECT_KEY?.trim();
-  if (!apiKey) {
-    throw new Error("Project key is not defined");
-  }
-
-  return new DetaClass(apiKey, KeyType.ProjectKey, apiKey.split("_")[0]);
+  return new DetaClass(DetaSDK(projectKey, authToken));
 }
