@@ -21,8 +21,17 @@ class DetaClass {
     return this.deta.Drive(driveName, host);
   }
 
-  BaseSafe(baseName: string, schema: z.ZodType<RecordType>, host?: string) {
-    return new BaseSafeClass(this.deta.Base(baseName, host), schema);
+  BaseSafe(
+    baseName: string,
+    schema: z.ZodType<RecordType>,
+    validation = true,
+    host?: string
+  ) {
+    return new BaseSafeClass(
+      this.deta.Base(baseName, host),
+      schema,
+      validation
+    );
   }
 }
 
