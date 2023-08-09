@@ -5,16 +5,16 @@ import {
   UndefinedType,
 } from "deta/dist/types/types/basic";
 
-export type GetResponse<T extends RecordType> = T | NullType;
-export type PutResponse<T extends RecordType> = T | NullType;
-export type InsertResponse<T extends RecordType> = T;
+export type GetResponse<T extends RecordType> = OutputRecord<T> | NullType;
+export type PutResponse<T extends RecordType> = OutputRecord<T> | NullType;
+export type InsertResponse<T extends RecordType> = OutputRecord<T>;
 export type PutManyResponse<T extends RecordType> = {
   processed: {
-    items: T[];
+    items: OutputRecord<T>[];
   };
 };
 export type FetchResponse<T extends RecordType> = {
-  items: T[];
+  items: OutputRecord<T>[];
   count: number;
   last?: string;
 };
@@ -27,6 +27,11 @@ export type RecordType = {
   [key: string]: BasicType | NullType | RecordType | UndefinedType | ArrayType;
   __expires?: never;
   key?: never;
+};
+
+export type OutputRecord<T extends RecordType> = T & {
+  key: string;
+  __expires?: number;
 };
 
 export type AnyType = RecordType | RecordType[keyof RecordType];
