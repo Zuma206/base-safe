@@ -25,6 +25,8 @@ export type ArrayType = Array<
 
 export type RecordType = {
   [key: string]: BasicType | NullType | RecordType | UndefinedType | ArrayType;
+  __expires?: never;
+  key?: never;
 };
 
 export type AnyType = RecordType | RecordType[keyof RecordType];
