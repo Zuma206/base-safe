@@ -3,7 +3,7 @@ import "dotenv/config";
 import { Deta, z } from "../src";
 
 test("Ensure create, read, delete works correctly", async () => {
-  const base = Deta().BaseSafe(
+  const base = Deta().SchemaBase(
     "test-basr",
     z.object({
       profile: z.object({
@@ -38,10 +38,24 @@ test("Ensure create, read, delete works correctly", async () => {
   if (!user) return;
 
   const fetchedUser = await base.get(key);
-  console.log(fetchedUser, user);
   expect(fetchedUser).toMatchObject(user);
 
   const response = await base.delete(key);
 
   expect(response).toBeNull();
+});
+
+test("Check input is being validated", async () => {
+  const base = Deta().SchemaBase(
+    "test-basr",
+    z.object({
+      username: z.string().min(3).max(16),
+    })
+  );
+
+  expect(() => {
+    base.put({
+      username: "Aa",
+    });
+  }).toThrowError(z.ZodError);
 });
