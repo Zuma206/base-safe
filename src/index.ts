@@ -6,7 +6,7 @@
 
 import { Deta as DetaSDK } from "deta";
 import type DetaClassSDK from "deta/dist/types/deta";
-import type { z } from "zod";
+import { z } from "zod";
 import { RecordType } from "./types";
 import { BaseSafeClass } from "./base";
 
@@ -21,9 +21,9 @@ class DetaClass {
     return this.deta.Drive(driveName, host);
   }
 
-  BaseSafe(
+  BaseSafe<T extends RecordType>(
     baseName: string,
-    schema: z.ZodType<RecordType>,
+    schema: z.ZodType<T>,
     validation = true,
     host?: string
   ) {
@@ -38,3 +38,5 @@ class DetaClass {
 export function Deta(projectKey?: string, authToken?: string) {
   return new DetaClass(DetaSDK(projectKey, authToken));
 }
+
+export { z };

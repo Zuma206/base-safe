@@ -57,6 +57,10 @@ export class BaseSafeClass<T extends RecordType> {
   } /** TODO: Add type to "query" parameter
         TODO: Add "target" option to FetchOptions */
 
+  delete(key: string) {
+    return this.base.delete(key);
+  }
+
   protected parse(...data: unknown[]) {
     if (this.validation) {
       this.manySchema.parse(data);
