@@ -9,6 +9,9 @@ import type {
   UpdateOptions,
 } from "deta/dist/types/types/base/request";
 import type {
+  ActionValue,
+  AnyType,
+  ArrayType,
   FetchResponse,
   GetResponse,
   InsertResponse,
@@ -17,6 +20,7 @@ import type {
   RecordType,
   Updates,
 } from "./types";
+import { Action, ActionTypes } from "./action";
 
 export class SchemaBaseClass<T extends RecordType> {
   protected manySchema: z.ZodArray<z.ZodType<T>>;
@@ -49,6 +53,24 @@ export class SchemaBaseClass<T extends RecordType> {
   }
 
   update(updates: Updates<T>, key: string, options?: UpdateOptions) {
+    updates = Object.fromEntries(
+      Object.entries(updates).map(([key, value]) => {
+        if (value instanceof Action) {
+          switch (value.operation) {
+            case ActionTypes.Append:
+              return [key, this.base.util.append(value.value as any)];
+            case ActionTypes.Increment:
+              return [key, this.base.util.increment(value.value as any)];
+            case ActionTypes.Prepend:
+              return [key, this.base.util.prepend(value.value as any)];
+            case ActionTypes.Trim:
+              return [key, this.base.util.trim()];
+          }
+        }
+        return [key, value];
+      })
+    ) as any;
+
     return this.base.update(updates, key, options);
   }
 
@@ -65,5 +87,21 @@ export class SchemaBaseClass<T extends RecordType> {
     if (this.validation) {
       this.manySchema.parse(data);
     }
+    this.base.util;
   }
+
+  util = {
+    trim() {
+      return new Action(ActionTypes.Trim, undefined);
+    },
+    increment<T extends AnyType>(value: T) {
+      return new Action(ActionTypes.Increment, value);
+    },
+    append<T extends AnyType>(value: T) {
+      return new Action(ActionTypes.Append, value);
+    },
+    prepend<T extends AnyType>(value: T) {
+      return new Action(ActionTypes.Prepend, value);
+    },
+  };
 } /** TODO: Add JSDoc documentation */

@@ -1,4 +1,4 @@
-import { Action, ActionTypesSDK } from "./action";
+import { Action, ActionTypes } from "./action";
 import {
   BasicType,
   NullType,
@@ -36,19 +36,19 @@ export type OutputRecord<T extends RecordType> = T & {
 
 export type AnyType = RecordType | RecordType[keyof RecordType];
 
-export type ActionTypes<T extends AnyType> = T extends number
-  ? ActionTypesSDK.Increment | ActionTypesSDK.Trim
+export type ActionsForType<T extends AnyType> = T extends number
+  ? ActionTypes.Increment | ActionTypes.Trim
   : T extends ArrayType
-  ? ActionTypesSDK.Append | ActionTypesSDK.Prepend | ActionTypesSDK.Trim
-  : ActionTypesSDK.Trim;
+  ? ActionTypes.Append | ActionTypes.Prepend | ActionTypes.Trim
+  : ActionTypes.Trim;
 
 export type ActionValue<
   T extends AnyType,
-  A extends ActionTypes<T>
-> = A extends ActionTypesSDK.Trim
+  A extends ActionsForType<T>
+> = A extends ActionTypes.Trim
   ? undefined
   : T extends Array<infer U>
-  ? A extends ActionTypesSDK.Append | ActionTypesSDK.Prepend
+  ? A extends ActionTypes.Append | ActionTypes.Prepend
     ? T | U
     : T
   : T;
@@ -66,8 +66,8 @@ export type Updates<
                   | T[K]
                   | Action<
                       T[K],
-                      ActionTypes<T[K]>,
-                      ActionValue<T[K], ActionTypes<T[K]>>
+                      ActionsForType<T[K]>,
+                      ActionValue<T[K], ActionsForType<T[K]>>
                     >;
               };
     }[keyof T]
