@@ -8,7 +8,7 @@ import { Deta as DetaSDK } from "deta";
 import type DetaClassSDK from "deta/dist/types/deta";
 import { z } from "zod";
 import { RecordType } from "./types";
-import { BaseSafeClass } from "./base";
+import { SchemaBaseClass } from "./base";
 
 class DetaClass {
   constructor(protected deta: DetaClassSDK) {}
@@ -21,13 +21,13 @@ class DetaClass {
     return this.deta.Drive(driveName, host);
   }
 
-  BaseSafe<T extends RecordType>(
+  SchemaBase<T extends RecordType>(
     baseName: string,
     schema: z.ZodType<T>,
     validation = true,
     host?: string
   ) {
-    return new BaseSafeClass(
+    return new SchemaBaseClass(
       this.deta.Base(baseName, host),
       schema,
       validation

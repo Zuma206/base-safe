@@ -18,7 +18,7 @@ import type {
   Updates,
 } from "./types";
 
-export class BaseSafeClass<T extends RecordType> {
+export class SchemaBaseClass<T extends RecordType> {
   protected manySchema: z.ZodArray<z.ZodType<T>>;
 
   constructor(
