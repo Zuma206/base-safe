@@ -37,10 +37,12 @@ export type OutputRecord<T extends RecordType> = T & {
 export type AnyType = RecordType | RecordType[keyof RecordType];
 
 export type ActionsForType<T extends AnyType> = T extends number
-  ? ActionTypes.Increment | ActionTypes.Trim
-  : T extends ArrayType
-  ? ActionTypes.Append | ActionTypes.Prepend | ActionTypes.Trim
-  : ActionTypes.Trim;
+  ? ActionTypes.Increment
+  : never | T extends ArrayType
+  ? ActionTypes.Append | ActionTypes.Prepend
+  : never | T extends undefined
+  ? ActionTypes.Trim
+  : never;
 
 export type ActionValue<
   T extends AnyType,
