@@ -21,6 +21,7 @@ import type {
   Updates,
 } from "./types";
 import { Action, ActionTypes } from "./action";
+import { Query } from "./query";
 
 export class SchemaBaseClass<T extends RecordType> {
   protected manySchema: z.ZodArray<z.ZodType<T>>;
@@ -74,10 +75,9 @@ export class SchemaBaseClass<T extends RecordType> {
     return this.base.update(updates, key, options);
   }
 
-  fetch(query?: CompositeType, options?: FetchOptions) {
-    return this.base.fetch(query, options) as Promise<FetchResponse<T>>;
-  } /** TODO: Add type to "query" parameter
-        TODO: Add "target" option to FetchOptions */
+  fetch(query?: Query<T>, options?: FetchOptions) {
+    return this.base.fetch(query as any, options) as Promise<FetchResponse<T>>;
+  } /** TODO: Add "target" option to FetchOptions */
 
   delete(key: string) {
     return this.base.delete(key);
