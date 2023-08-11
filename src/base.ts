@@ -1,17 +1,14 @@
 import type BaseClassSDK from "deta/dist/types/base";
-import type { CompositeType } from "deta/dist/types/types/basic";
 import { z } from "zod";
 import type {
-  FetchOptions,
   InsertOptions,
   PutManyOptions,
   PutOptions,
   UpdateOptions,
 } from "deta/dist/types/types/base/request";
 import type {
-  ActionValue,
   AnyType,
-  ArrayType,
+  FetchOptions,
   FetchResponse,
   GetResponse,
   InsertResponse,
@@ -75,9 +72,21 @@ export class SchemaBaseClass<T extends RecordType> {
     return this.base.update(updates, key, options);
   }
 
-  fetch(query?: Query<T>, options?: FetchOptions) {
-    return this.base.fetch(query as any, options) as Promise<FetchResponse<T>>;
-  } /** TODO: Add "target" option to FetchOptions */
+  async fetch(query?: Query<T>, options?: FetchOptions) {
+    const limit = options?.limit ?? Infinity;
+    const response = await this.base.fetch(query as any, options);
+    while (options?.fetchUntilLimit && response.count < limit) {
+      const nextResponse = await this.base.fetch(query as any, {
+        limit: limit - response.count,
+        last: response.last,
+        desc: options?.desc,
+      });
+      response.last = nextResponse.last;
+      response.items.push(...nextResponse.items);
+      response.count += nextResponse.count;
+    }
+    return response as FetchResponse<T>;
+  }
 
   delete(key: string) {
     return this.base.delete(key);

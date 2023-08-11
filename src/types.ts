@@ -1,3 +1,4 @@
+import { FetchOptions as FetchOptionsSDK } from "deta/dist/types/types/base/request";
 import { Action, ActionTypes } from "./action";
 import {
   BasicType,
@@ -74,3 +75,7 @@ export type Updates<
               };
     }[keyof T]
   : T;
+
+export type FetchOptions = FetchOptionsSDK & {
+  fetchUntilLimit?: boolean;
+};
