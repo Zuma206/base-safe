@@ -77,5 +77,5 @@ export type Updates<
   : T;
 
 export type FetchOptions = FetchOptionsSDK & {
-  fetchUntilLimit?: boolean;
+  autoPaginate?: boolean;
 };

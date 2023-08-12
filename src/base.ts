@@ -75,7 +75,7 @@ export class SchemaBaseClass<T extends RecordType> {
   async fetch(query?: Query<T>, options?: FetchOptions) {
     const limit = options?.limit ?? Infinity;
     const response = await this.base.fetch(query as any, options);
-    while (options?.fetchUntilLimit && response.count < limit) {
+    while (options?.autoPaginate && response.count < limit) {
       const nextResponse = await this.base.fetch(query as any, {
         limit: limit - response.count,
         last: response.last,
