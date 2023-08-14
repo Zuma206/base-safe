@@ -1,4 +1,7 @@
-import { FetchOptions as FetchOptionsSDK } from "deta/dist/types/types/base/request";
+import {
+  FetchOptions as FetchOptionsSDK,
+  PutManyOptions as PutManyOptionsSDK,
+} from "deta/dist/types/types/base/request";
 import { Action, ActionTypes } from "./action";
 import {
   BasicType,
@@ -77,5 +80,9 @@ export type Updates<
   : T;
 
 export type FetchOptions = FetchOptionsSDK & {
+  autoPaginate?: boolean;
+};
+
+export type PutManyOptions = PutManyOptionsSDK & {
   autoPaginate?: boolean;
 };

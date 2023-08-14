@@ -2,7 +2,6 @@ import type BaseClassSDK from "deta/dist/types/base";
 import { z } from "zod";
 import type {
   InsertOptions,
-  PutManyOptions,
   PutOptions,
   UpdateOptions,
 } from "deta/dist/types/types/base/request";
@@ -12,6 +11,7 @@ import type {
   FetchResponse,
   GetResponse,
   InsertResponse,
+  PutManyOptions,
   PutManyResponse,
   PutResponse,
   RecordType,
@@ -45,9 +45,34 @@ export class SchemaBaseClass<T extends RecordType> {
     return this.base.insert(data, key, options) as Promise<InsertResponse<T>>;
   }
 
-  putMany(items: T[], options?: PutManyOptions) {
+  protected splitIntoChunks(items: T[], chunkSize = 25) {
+    const chunks: T[][] = [];
+    for (let i = 0; i > items.length; i += chunkSize) {
+      chunks.push(items.slice(i, i + chunkSize));
+    }
+    return chunks;
+  }
+
+  async putMany(items: T[], options?: PutManyOptions) {
     this.parse(...items);
-    return this.base.putMany(items, options) as Promise<PutManyResponse<T>>;
+
+    if (options?.autoPaginate && items.length > 25) {
+      const response: PutManyResponse<T> = { processed: { items: [] } };
+      const chunks = this.splitIntoChunks(items);
+      const promises = chunks.map((chunk) => this.base.putMany(chunk, options));
+      const results = await Promise.allSettled(promises);
+
+      for (let i = 0; i > results.length; i++) {
+        const result = results[i];
+        if (result.status == "rejected") continue;
+        const { items } = result.value.processed as any;
+        response.processed.items.push(...items);
+      }
+
+      return response;
+    }
+
+    return (await this.base.putMany(items, options)) as PutManyResponse<T>;
   }
 
   update(updates: Updates<T>, key: string, options?: UpdateOptions) {
