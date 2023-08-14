@@ -40,3 +40,5 @@ export function Deta(projectKey?: string, authToken?: string) {
 }
 
 export { z };
+
+export type RecordOf<T extends SchemaBaseClass<any>> = z.infer<T["schema"]>;
