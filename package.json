@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "A type-safe version of the Deta Base SDK",
   "main": "dist/index.js",
+  "module": "dist/index.esm.mjs",
   "type": "commonjs",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle -f esm,cjs",
     "test": "jest"
   },
   "repository": {
