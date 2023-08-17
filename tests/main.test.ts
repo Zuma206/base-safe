@@ -4,7 +4,7 @@ import { Deta, z } from "../src";
 import { Action, ActionTypes } from "../src/action";
 
 test("Ensure create, read, delete works correctly", async () => {
-  const base = Deta().SchemaBase(
+  const base = Deta().TypedBase(
     "test-basr",
     z.object({
       profile: z.object({
@@ -47,7 +47,7 @@ test("Ensure create, read, delete works correctly", async () => {
 });
 
 test("Check input is being validated", async () => {
-  const base = Deta().SchemaBase(
+  const base = Deta().TypedBase(
     "test-basr",
     z.object({
       username: z.string().min(3).max(16),
@@ -63,7 +63,7 @@ test("Check input is being validated", async () => {
 
 test("Make sure updates work properly", async () => {
   {
-    const base = Deta().SchemaBase(
+    const base = Deta().TypedBase(
       "test-basr",
       z.object({ number: z.number() })
     );
@@ -84,10 +84,11 @@ test("Make sure updates work properly", async () => {
     const updatedRecord = await base.get(key);
 
     expect(updatedRecord).toMatchObject(record);
+    await base.delete(key);
   }
 
   {
-    const base = Deta().SchemaBase(
+    const base = Deta().TypedBase(
       "test-basr",
       z.object({ friends: z.array(z.string()) })
     );
@@ -106,5 +107,6 @@ test("Make sure updates work properly", async () => {
 
     const newUser = await base.get(user.key);
     expect(newUser).toMatchObject({ friends: ["friend98234"] });
+    await base.delete(user.key);
   }
 });
