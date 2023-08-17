@@ -83,6 +83,6 @@ export type FetchOptions = FetchOptionsSDK & {
   autoPaginate?: boolean;
 };
 
-export type PutManyOptions = PutManyOptionsSDK & {
-  autoPaginate?: boolean;
-};
+// export type PutManyOptions = PutManyOptionsSDK & {
+//   autoPaginate?: boolean;
+// };
