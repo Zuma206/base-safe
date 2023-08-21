@@ -4,17 +4,17 @@
 
 <p id="description">A type-safe version of the Deta Base SDK</p>
 
-  
-  
+# Online & comprehensive docs are coming soon™
+
 <h2>🧐 Features</h2>
 
 Here're some of the project's best features:
 
-*   Type-safe API
-*   Schema-based validation
-*   Build on top of the official API
-*   Validated with Zod
-*   Built-in JSDoc documentation
+- Type-safe API
+- Schema-based validation
+- Build on top of the official API
+- Validated with Zod
+- Built-in JSDoc documentation
 
 <h2>🛠️ Installation Steps:</h2>
 
@@ -30,15 +30,13 @@ npm install base-safe
 import { Deta } from "base-safe";
 ```
 
-  
-  
 <h2>💻 Built with</h2>
 
 Technologies used in the project:
 
-*   Deta Space
-*   Zod
-*   Typescript
+- Deta Space
+- Zod
+- Typescript
 
 <h2>🛡️ License:</h2>
 
