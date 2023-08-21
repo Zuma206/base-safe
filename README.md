@@ -45,3 +45,4 @@ Technologies used in the project:
 This project is licensed under the MIT License
 
 <h2>💖Like my work?</h2>
+The best thing you can do is let me know! Hit me up via discord (zu.ma) or via email (zuma at zuma dot eu dot org), and let me know what you like, and what you dont.
