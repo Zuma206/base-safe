@@ -140,7 +140,7 @@ A query is composed of a single query object or a list of query objects. In the 
    * @param options Optional parameters.
    * @returns 
    */
-  async fetch(query?: Query<T>, options?: FetchOptions) {
+  async fetch(query?: Query<T> | Query<T>[], options?: FetchOptions) {
     const limit = options?.limit ?? Infinity;
     const response = await this.base.fetch(query as any, options);
     while (options?.autoPaginate && response.count < limit && response.last) {
