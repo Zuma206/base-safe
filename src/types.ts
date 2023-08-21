@@ -9,8 +9,8 @@ import {
   UndefinedType,
 } from "deta/dist/types/types/basic";
 
-export type GetResponse<T extends RecordType> = OutputRecord<T> | NullType;
-export type PutResponse<T extends RecordType> = OutputRecord<T> | NullType;
+export type GetResponse<T extends RecordType> = OutputRecord<T> | null;
+export type PutResponse<T extends RecordType> = OutputRecord<T> | null;
 export type InsertResponse<T extends RecordType> = OutputRecord<T>;
 export type PutManyResponse<T extends RecordType> = {
   processed: {
@@ -33,10 +33,16 @@ export type RecordType = {
   key?: never;
 };
 
-export type OutputRecord<T extends RecordType> = T & {
+type OutputRecordUpdates = {
   key: string;
   __expires?: number;
 };
+
+export type OutputRecord<T extends RecordType> = Omit<
+  T,
+  keyof OutputRecordUpdates
+> &
+  OutputRecordUpdates;
 
 export type AnyType = RecordType | RecordType[keyof RecordType];
 
