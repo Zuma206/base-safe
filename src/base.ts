@@ -143,7 +143,7 @@ A query is composed of a single query object or a list of query objects. In the 
   async fetch(query?: Query<T>, options?: FetchOptions) {
     const limit = options?.limit ?? Infinity;
     const response = await this.base.fetch(query as any, options);
-    while (options?.autoPaginate && response.count < limit) {
+    while (options?.autoPaginate && response.count < limit && response.last) {
       const nextResponse = await this.base.fetch(query as any, {
         limit: limit - response.count,
         last: response.last,
