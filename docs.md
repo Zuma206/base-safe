@@ -1,10 +1,10 @@
 # Base Safe - Documentation
 
-Before going any further, please familiarise yourslef with the Deta's [official SDK documentation](https://deta.space/docs/en/build/reference/http-api/base), as this I will only be documenting differences between Base Safe and the official SDK.
+Before going any further, please familiarise yourself with Deta's [official SDK documentation](https://deta.space/docs/en/build/reference/http-api/base), as I will only be documenting differences between Base Safe and the official SDK.
 
 ## Inclusion of Zod
 
-Base safe includes a full copy of Zod that's used internally. You can access it from the top-level of the module if you do not wish to install it seperately:
+Base safe includes a full copy of Zod that's used internally. You can access it from the top level of the module if you do not wish to install it separately:
 
 ```ts
 import { z } from "base-safe";
@@ -15,7 +15,7 @@ const schema = z.object({ name: z.string() });
 
 ## DetaClass & TypedBase
 
-`DetaClass` almost identical to the official SDK's `DetaClass`, but with the extra `TypedBase` method that allows the initialization of the `TypedBase` class.
+`DetaClass` is almost identical to the official SDK's `DetaClass`, but with the extra `TypedBase` method that allows the initialization of the `TypedBase` class.
 
 Example:
 
@@ -30,7 +30,7 @@ officialDeta.TypedBase; // undefined
 baseSafeDeta.TypedBase; // Function
 ```
 
-The `TypedBase` class takes a few extra paremeters when it's initialized. Those being the zod schema, and a boolean to set wheather validation is necessary.
+The `TypedBase` class takes a few extra parameters when it's initialized. Those being the zod schema, and a boolean to set whether validation is necessary.
 
 Examples:
 
@@ -60,11 +60,11 @@ Inside Deta Base, there are two reserved keys, `key` & `__expires`. Both of thes
 await usersBase.put({ name: "Zuma" }, "key123", {
   //                                  ^ `key` will be "key123"
   expiresAt: new Date(1693415669863),
-  //         ^ `__expires` will be the unix timestamp of this `Date` object
+  //         ^ `__expires` will be the Unix timestamp of this `Date` object
 });
 ```
 
-Here's the reprocussions:
+Here are the repercussions:
 
 ```ts
 import { Deta, z } from "base-safe";
@@ -99,7 +99,7 @@ user.__expires; // typeof number|undefined
 
 ### 2. Parse in, cast out
 
-Base Safe assumes that you've been using the current schema for the whole of the app's existance. Therefore, validation will never occur on objects coming out of the base. This is mainly a performance choice, as validating thousands of results returned from `fetch` would not be efficient.
+Base Safe assumes that you've been using the current schema for the whole of the app's existence. Therefore, validation will never occur on objects coming out of the base. This is mainly a performance choice, as validating thousands of results returned from `fetch` would not be efficient.
 
 Examples:
 
@@ -124,7 +124,7 @@ Assuming that `user` is not null (the key exists), then the typescript types wou
 
 ## Extra Feature(s)
 
-Currently, Base-Safe only has 1 extra feature (aside from schemas) that the official SDK doesn't. That being auto-pagination. A fundamental limitation of Deta Base is that each query will stop after 1000 keys have been searched. To work around this, you can use Base Safe's `autoPagination` option. It should be noted that this option will send multiple requests until either the limit, or the end of the base, is reached.
+Currently, Base-Safe only has 1 extra feature (aside from schemas) that the official SDK doesn't. That being auto-pagination. A fundamental limitation of Deta Base is that each query will stop after 1000 keys have been searched. To work around this, you can use Base Safe's `autoPagination` option. It should be noted that this option will send multiple requests until either the limit or the end of the base, is reached.
 
 Example:
 
