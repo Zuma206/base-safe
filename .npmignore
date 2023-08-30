@@ -2,3 +2,5 @@ src
 tests
 jest.config.js
 logo.png
+docs.md
+tsconfig.json
