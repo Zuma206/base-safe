@@ -4,7 +4,7 @@
 
 <p id="description">A type-safe version of the Deta Base SDK</p>
 
-# Online & comprehensive docs are coming soon™
+## [Documentation can be found here](https://github.com/Zuma206/base-safe/blob/master/docs.md)
 
 <h2>🧐 Features</h2>
 
