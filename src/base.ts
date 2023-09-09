@@ -10,6 +10,7 @@ import type {
   AnyType,
   FetchOptions,
   FetchResponse,
+  FormDataInput,
   GetResponse,
   InsertResponse,
   PutManyResponse,
@@ -216,4 +217,13 @@ A query is composed of a single query object or a list of query objects. In the 
       return new Action(ActionTypes.Prepend, value);
     },
   };
+
+  /**
+   * Will parse form data into a record that can be inserted into the base. Will error if the formData cannot be parsed.
+   * @param formData The form data recieved when submitted
+   * @returns A record that's ready to be inserted into the base
+   */
+  parseForm(formData: FormDataInput<T>) {
+    return this.parse(formData);
+  }
 }

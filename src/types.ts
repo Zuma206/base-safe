@@ -92,3 +92,7 @@ export type FetchOptions = FetchOptionsSDK & {
 // export type PutManyOptions = PutManyOptionsSDK & {
 //   autoPaginate?: boolean;
 // };
+
+export type FormDataInput<T extends RecordType> = {
+  [K in keyof T]: FormDataEntryValue | null;
+};
