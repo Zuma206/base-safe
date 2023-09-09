@@ -224,6 +224,6 @@ A query is composed of a single query object or a list of query objects. In the 
    * @returns A record that's ready to be inserted into the base
    */
   parseForm(formData: FormDataInput<T>) {
-    return this.parse(formData);
+    return this.schema.parse(formData);
   }
 }
