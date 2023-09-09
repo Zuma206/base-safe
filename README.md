@@ -38,6 +38,11 @@ Technologies used in the project:
 - Zod
 - Typescript
 
+<h2>📖 Changelog</h2>
+- Added extra `parseForm` method for NextJS server actions
+- Updated internal version of Deta to 2.0.0 to allow for use in browsers
+- Various bug fixes
+
 <h2>🛡️ License:</h2>
 
 This project is licensed under the MIT License
