@@ -222,6 +222,7 @@ A query is composed of a single query object or a list of query objects. In the 
    * Will parse form data into a record that can be inserted into the base. Will error if the formData cannot be parsed.
    * @param formData The form data recieved when submitted
    * @returns A record that's ready to be inserted into the base
+   * @deprecated Deprecated since 0.4.0, use the methods on the `form` object instead
    */
   parseForm(formData: FormDataInput<T>) {
     return this.schema.parse(
@@ -233,4 +234,36 @@ A query is composed of a single query object or a list of query objects. In the 
       )
     );
   }
+
+  protected prepareFormData(formData: Partial<FormDataInput<T>>) {
+    return Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [
+        key,
+        value === "" ? undefined : value,
+      ])
+    );
+  }
+
+  /**
+   * Methods used for parsing form data, for use in senarios such as NextJS server actions
+   */
+  form = {
+    /**
+     * Converts data from a FormData object into a record
+     * @param formData An object that maps the data from a form to values in the record type
+     * @returns A type-safe record ready to be put into the base
+     */
+    parseInput: (formData: FormDataInput<T>) =>
+      this.schema.parse(this.prepareFormData(formData)),
+
+    /**
+     * COnverts data from a FormData object into an update
+     * @param formData An object that maps the data from a form to values to be updated
+     * @returns A type-safe update ready to be executed
+     */
+    parseUpdate: (formData: Partial<FormDataInput<T>>) =>
+      (this.schema as unknown as z.ZodObject<{}>)
+        .partial()
+        .parse(formData) as T,
+  };
 }
