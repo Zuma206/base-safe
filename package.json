@@ -30,7 +30,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "deta": "^1.2.0",
+    "deta": "^2.0.0",
     "zod": "^3.21.4"
   }
 }
