@@ -1,3 +1,6 @@
+### 🚧 This repository is now archived 🚧
+Deta Space has been shutdown, and thus, there is no need for this library to be maintained or used.
+
 <h1 align="center" id="title">Base Safe</h1>
 
 <p align="center"><img src="https://raw.githubusercontent.com/Zuma206/base-safe/master/logo.png" alt="project-image"></p>
